@@ -162,7 +162,8 @@ class ReservationApi:
 
             count += 1
             if count == self.retries:
-                raise HTTPError("Method has failed, too many retries")
+                print("Method has failed, too many retries")
+                quit()
 
         # Get here and retries have been exhausted, throw an appropriate
         # exception.
