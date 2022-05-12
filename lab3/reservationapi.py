@@ -95,19 +95,19 @@ class ReservationApi:
 
             # Get data from response
             data = response.json()
-            code = data["code"]
+            code = response.status_code
 
             # 200 response indicates all is well - send back the json data.
             try:
                 if code == 200:
                     requestConfirm = True
-                    return request.json()
+                    return data
 
                 # 5xx codes indicate a server-side error, show a warning
                 # (including the try number).
                 elif code == 503:
                     print(f"Service unavailable. Error: {code}")
-                elif str(code)[0] == "5" and len(code) == 3:
+                elif str(code)[0] == "5" and len(str(code)) == 3:
                     print(f"Warning, server side error. Error: {code}")
 
                 # 400 errors are client problems that are meaningful, so convert
@@ -139,8 +139,8 @@ class ReservationApi:
                 else:
                     # Freak out
                     print("Unexpected code:", str(code))
-                    del self
-                    break
+                    quit()
+
             except BadRequestError:
                 print("400 Error: Bad Request")
             except InvalidTokenError:
@@ -176,6 +176,7 @@ class ReservationApi:
         for slots in res:
             available.append(slots["id"])
         return available
+        
     def get_slots_held(self):
         """Obtain the list of slots currently held by the client"""
         # Your code goes here

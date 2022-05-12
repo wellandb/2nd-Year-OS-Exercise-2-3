@@ -34,9 +34,11 @@ for i in range(checks):
             hotel.release_slot(slot)
     else:
         for slot in hotelHold:
-            hotel.release_slot(slot)
+            if slot not in bandHold:
+                band.release_slot(slot)
         for slot in bandHold:
-            band.release_slot(slot)
+            if slot not in hotelHold:
+                hotel.release_slot(slot)
 
     print("Searching for slots")
 
@@ -48,22 +50,22 @@ for i in range(checks):
         commonFound = False
         hotelSlot = 0
         bandSlot = 0
-        while not commonFound:
-            if hotelAvailable[hotelSlot]["id"] == bandAvailable[bandSlot]["id"]:
-                commonFound = True
-            elif hotelAvailable[hotelSlot]["id"] > bandAvailable[bandSlot]["id"]:
-                bandSlot += 1
-            else:
-                hotelSlot += 1
-
-        for i in hotel.get_slots_held():
-            hotel.release_slot(i)
-        for i in band.get_slots_held():
-            band.release_slot(i)
-
-
-        bestH = hotel.reserve_slot(hotelAvailable[hotelSlot])
-        bestB = band.reserve_slot(bandAvailable[bandSlot])
+        
+        for slot in hotelAvailable: 
+            if slot in bandAvailable:
+                bestH = hotel.reserve_slot(hotelAvailable[slot])
+                bestB = band.reserve_slot(bandAvailable[slot])
+                reserveSlot = slot
+                break
+        
+        if hotelHold[0] < reserveSlot:
+            hotel.release_slot(bestH)
+            band.release_slot(bestB)
+            hotelHold.remove(bestH)
+            bandHold.remove(bestB)
+            bestH = hotelHold[0]
+            bestB = bandHold[0]
+                
 
         if bestB == "409 Error":
             hotel.release_slot(bestH)

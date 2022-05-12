@@ -6,7 +6,6 @@ import configparser
 # Load the configuration file containing the URLs and keys
 config = configparser.ConfigParser()
 config.read("api.ini")
-print(config)
 
 # Create an API object to communicate with the hotel API
 hotel  = reservationapi.ReservationApi(config['hotel']['url'],
@@ -14,12 +13,12 @@ hotel  = reservationapi.ReservationApi(config['hotel']['url'],
                                        int(config['global']['retries']),
                                        float(config['global']['delay']))
 
-# Your code goes here
+band = reservationapi.ReservationApi(config['band']['url'],
+                                    config['band']['key'],
+                                    int(config['global']['retries']),
+                                    float(config['global']['delay']))
 
-band  = reservationapi.ReservationApi(config['band']['url'],
-                                       config['band']['key'],
-                                       int(config['global']['retries']),
-                                       float(config['global']['delay']))
+# Your code goes here
 
 checks = 3
 
