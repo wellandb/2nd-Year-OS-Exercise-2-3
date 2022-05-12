@@ -50,11 +50,11 @@ for i in range(checks):
         commonFound = False
         hotelSlot = 0
         bandSlot = 0
-        
+
         for slot in hotelAvailable: 
             if slot in bandAvailable:
-                bestH = hotel.reserve_slot(hotelAvailable[slot])
-                bestB = band.reserve_slot(bandAvailable[slot])
+                bestH = hotel.reserve_slot(slot)
+                bestB = band.reserve_slot(slot)
                 reserveSlot = slot
                 break
         

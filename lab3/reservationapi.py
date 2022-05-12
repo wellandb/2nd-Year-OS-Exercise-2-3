@@ -114,26 +114,26 @@ class ReservationApi:
                 # them to separate exceptions that can be caught and handled by
                 # the caller.
                 elif code == 400:
-                    raise BadRequestError(self.reason(response))
+                    raise BadRequestError("")
                 # 401 error
                 elif code == 401:
-                    raise InvalidTokenError(self.reason(response))
+                    raise InvalidTokenError("")
 
                 # 403 error
                 elif code == 403:
-                    raise BadSlotError(self.reason(response))
+                    raise BadSlotError("")
 
                 # 404 error
                 elif code == 404:
-                    raise NotProcessedError(self.reason(response))
+                    raise NotProcessedError("")
 
                 # 409 error
                 elif code == 409:
-                    raise SlotUnavailableError(self.reason(response))
+                    raise SlotUnavailableError("")
 
                 # 451 error
                 elif code == 451:
-                    raise ReservationLimitError(self.reason(response))
+                    raise ReservationLimitError("")
 
                 # Anything else is unexpected and may need to kill the client.
                 else:

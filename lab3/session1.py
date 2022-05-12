@@ -46,7 +46,7 @@ for i in range(checks):
         bandAvailable = band.get_slots_available()
 
         bestH = hotel.reserve_slot(hotelAvailable[0])
-        bestB = band.reserve_slot(bandAvailable[0])
+        bestB = band.reserve_slot(hotelAvailable[0])
 
         if bestB == "409 Error":
             hotel.release_slot(bestH)
