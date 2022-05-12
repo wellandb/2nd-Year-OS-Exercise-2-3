@@ -1,26 +1,25 @@
 #!/usr/bin/python3
 
+import time
 import reservationapi
 import configparser
 
 # Load the configuration file containing the URLs and keys
 config = configparser.ConfigParser()
 config.read("api.ini")
-print(config)
 
-# Create an API object to communicate with the hotel API
+# Create an API object to communicate with the band API
 hotel  = reservationapi.ReservationApi(config['hotel']['url'],
                                        config['hotel']['key'],
                                        int(config['global']['retries']),
                                        float(config['global']['delay']))
-
-# Your code goes here
 
 band  = reservationapi.ReservationApi(config['band']['url'],
                                        config['band']['key'],
                                        int(config['global']['retries']),
                                        float(config['global']['delay']))
 
+# Your code goes here
 checks = 3
 
 for i in range(checks):
@@ -46,8 +45,25 @@ for i in range(checks):
         hotelAvailable = hotel.get_slots_available()
         bandAvailable = band.get_slots_available()
 
-        bestH = hotel.reserve_slot(hotelAvailable[0])
-        bestB = band.reserve_slot(bandAvailable[0])
+        commonFound = False
+        hotelSlot = 0
+        bandSlot = 0
+        while not commonFound:
+            if hotelAvailable[hotelSlot]["id"] == bandAvailable[bandSlot]["id"]:
+                commonFound = True
+            elif hotelAvailable[hotelSlot]["id"] > bandAvailable[bandSlot]["id"]:
+                bandSlot += 1
+            else:
+                hotelSlot += 1
+
+        for i in hotel.get_slots_held():
+            hotel.release_slot(i)
+        for i in band.get_slots_held():
+            band.release_slot(i)
+
+
+        bestH = hotel.reserve_slot(hotelAvailable[hotelSlot])
+        bestB = band.reserve_slot(bandAvailable[bandSlot])
 
         if bestB == "409 Error":
             hotel.release_slot(bestH)
@@ -55,6 +71,8 @@ for i in range(checks):
             band.release_slot(bestB)
         else:
             slotFound == True
+        
+        time.delay(1)
 
     print(f"Slot {bestH} reserved for the hotel")
     print(f"Slot {bestB} reserved for the band")
