@@ -45,22 +45,22 @@ for i in range(checks):
         hotelAvailable = hotel.get_slots_available()
         bandAvailable = band.get_slots_available()
 
-        bestH = hotel.reserve_slot(hotelAvailable[0])
-        bestB = band.reserve_slot(hotelAvailable[0])
+        bestHotelSlot = hotel.reserve_slot(hotelAvailable[0])
+        bestBandSlot = band.reserve_slot(hotelAvailable[0])
 
-        if bestB == "409 Error":
-            hotel.release_slot(bestH)
-        elif bestH == "409 Error":
-            band.release_slot(bestB)
+        if bestBandSlot == "409 Error":
+            hotel.release_slot(bestHotelSlot)
+        elif bestHotelSlot == "409 Error":
+            band.release_slot(bestBandSlot)
         else:
             slotFound == True
 
-    print(f"Slot {bestH} reserved for the hotel")
-    print(f"Slot {bestB} reserved for the band")
+    print(f"Slot {bestHotelSlot} reserved for the hotel")
+    print(f"Slot {bestBandSlot} reserved for the band")
 
     if i < checks - 1:
         print ("Checking Again")
 
 print("Slots found: ")
-print(f"Hotel: Slot {bestH}")
-print(f"Band: Slot {bestB}")
+print(f"Hotel: Slot {bestHotelSlot}")
+print(f"Band: Slot {bestBandSlot}")
