@@ -10,12 +10,9 @@ types of client-side error that can be encountered.
 # implementation code. They are marked with "Your code goes here".
 # Comments are included to provide hints about what you should do.
 
-import http
-from msilib.schema import IniFile
 from urllib import request
 import requests
 import simplejson
-import warnings
 import time
 
 from requests.exceptions import HTTPError
@@ -76,6 +73,7 @@ class ReservationApi:
            appropriate exceptions"""
         # Your code goes here
         requestConfirm = False
+        count = 0
 
         # Allow for multiple retries if needed
         while not(requestConfirm):
